@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "name": "Paneer Pizza",
+    "description": "Soft paneer cubes with capsicum and spicy red paprika on a cheesy base.",
+    "price": 199,
+    "img": "https://foodish-api.com/images/pizza/pizza1.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Classic Margherita",
+    "description": "Authentic Italian taste with fresh basil and premium mozzarella cheese.",
+    "price": 149,
+    "img": "https://foodish-api.com/images/pizza/pizza10.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Double Cheese Burger",
+    "description": "Two juicy patties layered with melted cheddar, pickles, and mustard.",
+    "price": 179,
+    "img": "https://foodish-api.com/images/burger/burger5.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Veggie Supreme Pizza",
+    "description": "Loaded with onions, bell peppers, olives, mushrooms, and sweet corn.",
+    "price": 219,
+    "img": "https://foodish-api.com/images/pizza/pizza22.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Spicy Chicken Burger",
+    "description": "Crispy fried chicken breast with jalapeños and spicy mayo.",
+    "price": 189,
+    "img": "https://foodish-api.com/images/burger/burger12.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Butter Chicken",
+    "description": "Rich and creamy tomato-based gravy with tender tandoori chicken pieces.",
+    "price": 299,
+    "img": "https://foodish-api.com/images/butter-chicken/butter-chicken11.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Masala Dosa",
+    "description": "Crispy rice crepe filled with spiced potato mash, served with sambar.",
+    "price": 120,
+    "img": "https://foodish-api.com/images/dosa/dosa43.jpg"
+  },
+  {
+    "id": 8,
+    "name": "Pepperoni Feast",
+    "description": "Generous toppings of spicy pepperoni and extra mozzarella cheese.",
+    "price": 249,
+    "img": "https://foodish-api.com/images/pizza/pizza35.jpg"
+  },
+  {
+    "id": 9,
+    "name": "Hyderabadi Biryani",
+    "description": "Fragrant basmati rice cooked with exotic spices and marinated chicken.",
+    "price": 259,
+    "img": "https://foodish-api.com/images/biryani/biryani20.jpg"
+  },
+  {
+    "id": 10,
+    "name": "Classic Pasta Alfredo",
+    "description": "Penne pasta tossed in a rich, creamy white sauce with garlic and herbs.",
+    "price": 189,
+    "img": "https://foodish-api.com/images/pasta/pasta15.jpg"
+  },
+  {
+    "id": 11,
+    "name": "Idli Sambar",
+    "description": "Steamed rice cakes served with hot lentil soup and coconut chutney.",
+    "price": 80,
+    "img": "https://foodish-api.com/images/idly/idly25.jpg"
+  },
+  {
+    "id": 12,
+    "name": "Crispy Samosa (2pcs)",
+    "description": "Fried pastry filled with a savory potato and pea stuffing.",
+    "price": 40,
+    "img": "https://foodish-api.com/images/samosa/samosa7.jpg"
+  },
+  {
+    "id": 13,
+    "name": "Fried Rice",
+    "description": "Wok-tossed rice with fresh vegetables, soy sauce, and scallions.",
+    "price": 159,
+    "img": "https://foodish-api.com/images/rice/rice12.jpg"
+  },
+  {
+    "id": 14,
+    "name": "Chocolate Brownie",
+    "description": "Dense, fudgy brownie with walnuts and a drizzle of hot fudge.",
+    "price": 99,
+    "img": "https://foodish-api.com/images/dessert/dessert22.jpg"
+  },
+  {
+    "id": 15,
+    "name": "Arrabiata Pasta",
+    "description": "Spicy tomato sauce pasta with olives, chili flakes, and garlic.",
+    "price": 179,
+    "img": "https://foodish-api.com/images/pasta/pasta3.jpg"
+  },
+  {
+    "id": 16,
+    "name": "Zesty BBQ Pizza",
+    "description": "Smoky BBQ sauce base with grilled chicken and caramelized onions.",
+    "price": 269,
+    "img": "https://foodish-api.com/images/pizza/pizza48.jpg"
+  },
+  {
+    "id": 17,
+    "name": "Veggie Burger",
+    "description": "Hand-crafted vegetable patty with lettuce, tomato, and herb sauce.",
+    "price": 139,
+    "img": "https://foodish-api.com/images/burger/burger80.jpg"
+  },
+  {
+    "id": 18,
+    "name": "Mutton Biryani",
+    "description": "Slow-cooked rice with tender mutton pieces and aromatic saffron.",
+    "price": 329,
+    "img": "https://foodish-api.com/images/biryani/biryani5.jpg"
+  },
+  {
+    "id": 19,
+    "name": "Cheesecake Slice",
+    "description": "Creamy New York style cheesecake with a graham cracker crust.",
+    "price": 149,
+    "img": "https://foodish-api.com/images/dessert/dessert5.jpg"
+  },
+  {
+    "id": 20,
+    "name": "Tandoori Chicken Pizza",
+    "description": "Indian twist pizza with tandoori chicken, mint mayo, and green chilies.",
+    "price": 239,
+    "img": "https://foodish-api.com/images/pizza/pizza12.jpg"
+  }
+]
