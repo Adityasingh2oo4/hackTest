@@ -1,0 +1,26 @@
+# Java / Maven
+retail-ordering-backend/target/
+*.class
+*.jar
+*.war
+*.log
+.mvn/
+mvnw
+mvnw.cmd
+
+# Node / Frontend
+frontend/retail/node_modules/
+frontend/retail/dist/
+frontend/retail/.env
+frontend/retail/.env.local
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

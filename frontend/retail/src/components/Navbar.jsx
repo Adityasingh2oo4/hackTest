@@ -19,7 +19,7 @@ export default function Navbar() {
     <nav className="flex items-center justify-between px-6 py-4 border-b bg-white">
 
       <div className="text-2xl font-bold">
-        <Link to="/">AgentX</Link>
+        <Link to="/">Rasoi</Link>
       </div>
 
       <div className="flex items-center gap-4">
