@@ -1,10 +1,14 @@
-# 🚀 Deployment Guide — Railway (Backend + MySQL) + Netlify (Frontend)
+# 🚀 Deployment Guide — Render + Aiven + Netlify (100% Free)
 
-## Prerequisites
+## Architecture
 
-- A **GitHub account** with this repo pushed
-- A free **Railway** account → [railway.app](https://railway.app)
-- A free **Netlify** account → [netlify.com](https://netlify.com)
+| Component | Platform | Free Tier |
+|-----------|----------|-----------|
+| **Frontend** | [Netlify](https://netlify.com) | ✅ 100GB bandwidth, 300 build min/month |
+| **Backend** | [Render](https://render.com) | ✅ 750 hrs/month (spins down after 15 min inactivity) |
+| **MySQL DB** | [Aiven](https://aiven.io) | ✅ 1GB storage, free forever |
+
+> ⚠️ **Note**: Render free tier spins down after 15 min of inactivity. First request after sleep takes ~30-50 seconds to wake up. This is normal for all free backend hosts.
 
 ---
 
@@ -21,134 +25,136 @@ git push -u origin main
 
 ---
 
-## Step 2 — Deploy Backend + MySQL on Railway
+## Step 2 — Create Free MySQL on Aiven
 
-### 2a. Create a MySQL Database
+1. Go to [aiven.io](https://aiven.io) → **Sign up** (free, no credit card)
+2. Click **Create service** → Choose **MySQL**
+3. Select the **Free** plan → pick any region → **Create service**
+4. Once running, go to the service → **Overview** tab → **Connection information**
+5. Note down these values:
 
-1. Go to [railway.app](https://railway.app) → **New Project** → **Provision MySQL**
-2. Click the MySQL service → **Variables** tab → **Connect** tab
-3. Note down these values:
-   - `MYSQL_HOST`
-   - `MYSQL_PORT`
-   - `MYSQL_USER` (usually `root`)
-   - `MYSQL_PASSWORD`
-   - `MYSQL_DATABASE` (usually `railway`)
+   | Field | Example |
+   |-------|---------|
+   | **Host** | `mysql-xxxx.aiven.io` |
+   | **Port** | `12345` |
+   | **User** | `avnadmin` |
+   | **Password** | `AVNS_xxxxxxxxxx` |
+   | **Database** | `defaultdb` |
 
-### 2b. Deploy the Spring Boot Backend
-
-1. In the same Railway project → **New** → **GitHub Repo** → select your `hackTest` repo
-2. Go to **Settings** and set:
-   - **Root Directory**: `retail-ordering-backend`
-   - **Build Command**: `mvn clean package -DskipTests`
-   - **Start Command**: `java -jar target/*.jar`
-3. Go to the **Variables** tab and add these:
-
-   | Variable | Value |
-   |----------|-------|
-   | `DATABASE_URL` | `jdbc:mysql://MYSQL_HOST:MYSQL_PORT/MYSQL_DATABASE` |
-   | `DATABASE_USERNAME` | `root` (from MySQL service) |
-   | `DATABASE_PASSWORD` | (from MySQL service) |
-   | `JWT_SECRET` | A long random string (min 64 chars) |
-   | `CORS_ALLOWED_ORIGINS` | `*` (update with Netlify domain later) |
-
-   > 💡 **Tip**: You can use Railway's internal networking for the DB URL.  
-   > Go to MySQL service → **Connect** → copy the **Private** JDBC URL, it looks like:  
-   > `jdbc:mysql://mysql.railway.internal:3306/railway`
-
-4. Go to **Settings** → **Networking** → **Generate Domain**
-5. Note down your backend URL (e.g., `https://hacktest-production.up.railway.app`)
-
-### 2c. Verify Backend
-
-Visit `https://YOUR-RAILWAY-URL/swagger-ui.html` — you should see the Swagger UI.
+6. Your JDBC URL will be:
+   ```
+   jdbc:mysql://HOST:PORT/DATABASE?sslMode=REQUIRED
+   ```
 
 ---
 
-## Step 3 — Deploy Frontend on Netlify
+## Step 3 — Deploy Backend on Render
 
-### Option A: Deploy via Netlify UI (Recommended)
+1. Go to [render.com](https://render.com) → **Sign up** (free, no credit card)
+2. Click **New** → **Web Service** → **Connect a repository** → select your `hackTest` repo
+3. Configure:
+
+   | Setting | Value |
+   |---------|-------|
+   | **Name** | `hacktest-backend` |
+   | **Root Directory** | `retail-ordering-backend` |
+   | **Runtime** | `Docker` |
+   | **Instance Type** | `Free` |
+
+   > 💡 If Render doesn't auto-detect, set **Build Command** and **Start Command** manually (see Step 3b below).
+
+### 3a. If using Docker runtime (Recommended)
+
+Create a `Dockerfile` in `retail-ordering-backend/` (already done if you follow this guide):
+
+The Dockerfile is already configured. Render will auto-build it.
+
+### 3b. If using Native runtime
+
+   | Setting | Value |
+   |---------|-------|
+   | **Build Command** | `mvn clean package -DskipTests` |
+   | **Start Command** | `java -jar target/*.jar` |
+
+### 3c. Add Environment Variables
+
+Go to the **Environment** tab → add these:
+
+| Variable | Value |
+|----------|-------|
+| `DATABASE_URL` | `jdbc:mysql://HOST:PORT/DATABASE?sslMode=REQUIRED` (from Aiven) |
+| `DATABASE_USERNAME` | `avnadmin` (from Aiven) |
+| `DATABASE_PASSWORD` | your Aiven password |
+| `JWT_SECRET` | A long random string (min 64 chars). Generate one: `openssl rand -base64 64` |
+| `CORS_ALLOWED_ORIGINS` | `*` (update with Netlify domain later) |
+
+4. Click **Deploy**
+5. Wait for the build to finish (~5-10 min for first deploy)
+6. Note down your Render URL (e.g., `https://hacktest-backend.onrender.com`)
+
+### 3d. Verify Backend
+
+Visit `https://YOUR-RENDER-URL/swagger-ui.html` — you should see the Swagger UI.
+
+---
+
+## Step 4 — Deploy Frontend on Netlify
 
 1. Go to [app.netlify.com](https://app.netlify.com) → **Add new site** → **Import an existing project**
 2. Connect your GitHub account → select the `hackTest` repo
-3. Configure build settings:
-   - **Base directory**: `frontend/retail`
-   - **Build command**: `npm run build`
-   - **Publish directory**: `frontend/retail/dist`
-4. Click **Show advanced** → **New variable** → add:
+3. Configure:
+
+   | Setting | Value |
+   |---------|-------|
+   | **Base directory** | `frontend/retail` |
+   | **Build command** | `npm run build` |
+   | **Publish directory** | `frontend/retail/dist` |
+
+4. Click **Show advanced** → **New variable**:
 
    | Key | Value |
    |-----|-------|
-   | `VITE_API_URL` | `https://YOUR-RAILWAY-URL` (NO trailing slash) |
+   | `VITE_API_URL` | `https://YOUR-RENDER-URL` (NO trailing slash) |
 
 5. Click **Deploy site**
 6. Note down your Netlify domain (e.g., `https://hacktest.netlify.app`)
-7. *(Optional)* Go to **Site configuration** → **Domain management** → set a custom subdomain
-
-### Option B: Deploy via Netlify CLI
-
-```bash
-# Install CLI
-npm install -g netlify-cli
-
-# Login
-netlify login
-
-# Navigate to frontend
-cd frontend/retail
-
-# Build
-npm run build
-
-# Deploy (follow the prompts)
-netlify deploy --prod --dir=dist
-```
 
 ---
 
-## Step 4 — Update CORS on Railway
+## Step 5 — Update CORS on Render
 
-1. Go back to your Railway backend service → **Variables**
+1. Go back to Render → your backend service → **Environment**
 2. Update `CORS_ALLOWED_ORIGINS` to your Netlify domain:
    ```
    https://hacktest.netlify.app
    ```
-3. Railway will auto-redeploy
+3. Click **Save Changes** → Render will auto-redeploy
 
 ---
 
 ## ✅ You're Live!
 
 - **Frontend**: `https://hacktest.netlify.app`
-- **Backend API**: `https://hacktest-production.up.railway.app`
-- **Swagger Docs**: `https://hacktest-production.up.railway.app/swagger-ui.html`
+- **Backend API**: `https://hacktest-backend.onrender.com`
+- **Swagger Docs**: `https://hacktest-backend.onrender.com/swagger-ui.html`
 
 ---
 
-## 💰 Free Tier Limits
-
-| Service | Free Tier |
-|---------|-----------|
-| **Railway** | $5 free credit/month (enough for small apps) |
-| **Netlify** | 100GB bandwidth, 300 build min/month |
-
-> ⚠️ Railway's free credit refreshes monthly. For a low-traffic app, $5 is usually enough to cover both the backend + MySQL.
-
----
-
-## 🔧 Troubleshooting
+## � Troubleshooting
 
 | Issue | Solution |
 |-------|----------|
-| CORS errors in browser | Ensure `CORS_ALLOWED_ORIGINS` on Railway matches your exact Netlify URL |
-| Frontend shows blank page | Check that `VITE_API_URL` is set correctly (no trailing slash) |
-| Backend fails to start | Check Railway logs — likely a DB connection issue, verify `DATABASE_URL` |
-| 404 on page refresh | The `_redirects` file and `netlify.toml` should handle this — verify they're in the build |
+| Backend takes long to respond | Render free tier sleeps after 15 min inactivity — first request takes ~30-50s |
+| CORS errors in browser | Ensure `CORS_ALLOWED_ORIGINS` matches your exact Netlify URL (no trailing slash) |
+| DB connection refused | Check Aiven requires SSL — make sure `?sslMode=REQUIRED` is in your JDBC URL |
+| Frontend 404 on page refresh | `_redirects` file + `netlify.toml` handle this — verify they're in the build |
+| Render build fails | Ensure `system.properties` has `java.runtime.version=17` |
 
 ---
 
 ## Local Development (Still Works!)
 
-No changes needed — environment variable defaults fall back to `localhost`:
+No changes needed — env var defaults fall back to `localhost`:
 
 ```bash
 # Backend (requires MySQL running locally)
